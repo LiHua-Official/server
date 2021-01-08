@@ -1,10 +1,6 @@
 #!/bin/sh
 # Judgement of current operating system
 case `uname -a` in
-	*arch*)
-		Install='pacman -S'
-		Update='pacman -Syu'
-		;;
 	*ubuntu*|*android*)
 		Install='apt install'
 		Update='apt update'
@@ -12,6 +8,10 @@ case `uname -a` in
 	*centos*)
 		Install='yum install'
 		Update='yum update'
+		;;
+	*arch*)
+		Install='pacman -S'
+		Update='pacman -Syu'
 		;;
 	*)
 		case $LANG in
