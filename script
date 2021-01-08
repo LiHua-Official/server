@@ -10,8 +10,8 @@ case `uname -a` in
 		Update='yum update'
 		;;
 	*arch*)
-		Install='pacman -S'
-		Update='pacman -Syu'
+		Install='sudo pacman -S'
+		Update='sudo pacman -Syu'
 		;;
 	*)
 		case $LANG in
