@@ -16,48 +16,42 @@ case `uname -a` in
 	*)
 		case $LANG in
 			zh_CN*)
-				echo '无法识别您操作系统的包管理器，源码安装方式暂未编写.'
-				;;
+				echo '无法识别您操作系统的包管理器，源码安装方式暂未编写.';;
 			*)
 				echo 'Your operating system is not recognized. The source code installation has not been written.'
-				;;
 		esac
 esac
 
 case $LANG in
 	zh_CN*)
-		echo '正在更新...'
-		;;
+		echo '正在更新...';;
 	*)
 		echo 'Updating...'
-		;;
 esac
 sh -c "$Update"
 
 Install(){
-	if test $path/$1
-	then
-		case $LANG in
-			zh_CN*)
-				echo "正在安装$1..."
-				;;
-			*)
-				echo "Installing $1..."
-		esac
-	fi
-	sh -c "$Install $1"
+	for package in $*
+	do
+		if test `find $path -name $package`
+		then
+	       		case $LANG in
+				zh_CN*)
+					echo "正在安装$package...";;
+				*)
+					echo "Installing $package..."
+			esac
+			sh -c "$Install $package"
+		fi
+	done
 }
 
-Install git
-Install zsh
-Install vim
+Install git zsh vim jq
 
 case $LANG in
 	zh_CN*)
-		echo '正在安装 ohmyzsh...'
-		;;
+		echo '正在安装 ohmyzsh...';;
 	*)
 		echo 'Installing ohmyzsh...'
-		;;
 esac
 sh -c "$(curl -fsSL 'https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh@master/tools/install.sh')"
