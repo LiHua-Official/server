@@ -1,0 +1,74 @@
+#!/bin/sh
+# Judgement of current operating system
+case `uname -a` in
+	*arch*)
+		Install='pacman -Sy'
+		Update='pacman -Syu'
+		;;
+	*ubuntu*)
+		Install='apt install'
+		Update='apt update'
+		;;
+	*centos*)
+		Install='yum install'
+		Update='yum update'
+		;;
+	*)
+		case $LANG in
+			zh_CN*)
+				echo '无法识别您操作系统的包管理器，源码安装方式暂未编写.'
+				;;
+			*)
+				echo 'Your operating system is not recognized. The source code installation has not been written.'
+				;;
+		esac
+esac
+
+case $LANG in
+	zh_CN*)
+		echo '正在更新...'
+		;;
+	*)
+		echo 'Updating...'
+		;;
+esac
+sh -c "$Update"
+
+case $LANG in
+	zh_CN*)
+		echo '正在安装 git...'
+		;;
+	*)
+		echo 'Installing git...'
+esac
+sh -c "$Install git"
+
+case $LANG in
+	zh_CN*)
+		echo '正在安装 zsh...'
+		;;
+	*)
+		echo 'Installing zsh...'
+		;;
+esac
+sh -c "$Install zsh"
+
+case $LANG in
+	zh_CN*)
+		echo '正在安装 ohmyzsh...'
+		;;
+	*)
+		echo 'Installing ohmyzsh...'
+		;;
+esac
+sh -c "$(curl -fsSL 'https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh@master/tools/install.sh')"
+
+case LANG in
+	zh_CN*)
+		echo '正在安装 vim'
+		;;
+	*)
+		echo ‘Installing vim...’
+		;;
+esac
+sh -c "$Install vim"
