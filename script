@@ -1,57 +1,50 @@
 #!/bin/sh
-# Judgement of current operating system
-case `uname -a` in
-	*ubuntu*|*Android*)
-		Install='apt install'
-		Update='apt update'
-		;;
-	*centos*)
-		Install='yum install'
-		Update='yum update'
-		;;
-	*arch*)
-		Install='sudo pacman -S'
-		Update='sudo pacman -Syu'
-		;;
-	*)
-		case $LANG in
-			zh_CN*)
-				echo '无法识别您操作系统的包管理器，源码安装方式暂未编写.';;
-			*)
-				echo 'Your operating system is not recognized. The source code installation has not been written.'
-		esac && exit
-esac
+path=`echo $PATH | sed 's/:/ /g'`
+
+for file in `find $path`
+do
+	case ${file##*/} in
+		apk|apt|pkg|yum)
+			Install="${file##*/} install"
+			Update="${file##*/} Update"
+			;;
+		pacman|powerpill|yay)
+			Install="${file##*/} -S"
+			Update="${file##*/} -Syu"
+			;;
+		*)
+	esac
+done
+if [ ! $Install ];then
+	case $LANG in
+		zh_CN*)	echo '无法识别您操作系统的包管理器，源码安装方式暂未编写.';;
+		*)	echo 'Your operating system is not recognized. The source code installation has not been written.'
+	esac && exit
+fi
 
 case $LANG in
-	zh_CN*)
-		echo '正在更新...';;
-	*)
-		echo 'Updating...'
+	zh_CN*)	echo '正在更新...';;
+	*)	echo 'Updating...'
 esac
 sh -c "$Update"
 
 Install(){
 	for package in $*
 	do
-		if test `find $path -name $package`
-		then
+		if [ ! $(find $path -name $package) ];then
 	       		case $LANG in
-				zh_CN*)
-					echo "正在安装$package...";;
-				*)
-					echo "Installing $package..."
+				zh_CN*)	echo "正在安装$package...";;
+				*)	echo "Installing $package..."
 			esac
 			sh -c "$Install $package"
 		fi
 	done
 }
 
-Install git zsh vim jq
+Install git zsh vim jq proxytunnel
 
 case $LANG in
-	zh_CN*)
-		echo '正在安装 ohmyzsh...';;
-	*)
-		echo 'Installing ohmyzsh...'
+	zh_CN*)	echo '正在安装 ohmyzsh...';;
+	*)	echo 'Installing ohmyzsh...'
 esac
 sh -c "$(curl -fsSL 'https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh@master/tools/install.sh')"
