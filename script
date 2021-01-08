@@ -5,7 +5,7 @@ case `uname -a` in
 		Install='pacman -S'
 		Update='pacman -Syu'
 		;;
-	*ubuntu*)
+	*ubuntu*|*android*)
 		Install='apt install'
 		Update='apt update'
 		;;
@@ -19,7 +19,7 @@ case `uname -a` in
 				echo '无法识别您操作系统的包管理器，源码安装方式暂未编写.';;
 			*)
 				echo 'Your operating system is not recognized. The source code installation has not been written.'
-		esac
+		esac && exit
 esac
 
 case $LANG in
