@@ -2,7 +2,7 @@
 # Judgement of current operating system
 case `uname -a` in
 	*arch*)
-		Install='pacman -Sy'
+		Install='pacman -S'
 		Update='pacman -Syu'
 		;;
 	*ubuntu*)
@@ -34,24 +34,23 @@ case $LANG in
 esac
 sh -c "$Update"
 
-case $LANG in
-	zh_CN*)
-		echo '正在安装 git...'
-		;;
-	*)
-		echo 'Installing git...'
-esac
-sh -c "$Install git"
+Install(){
+	if test $path/$1
+	then
+		case $LANG in
+			zh_CN*)
+				echo "正在安装$1..."
+				;;
+			*)
+				echo "Installing $1..."
+		esac
+	fi
+	sh -c "$Install $1"
+}
 
-case $LANG in
-	zh_CN*)
-		echo '正在安装 zsh...'
-		;;
-	*)
-		echo 'Installing zsh...'
-		;;
-esac
-sh -c "$Install zsh"
+Install git
+Install zsh
+Install vim
 
 case $LANG in
 	zh_CN*)
@@ -62,13 +61,3 @@ case $LANG in
 		;;
 esac
 sh -c "$(curl -fsSL 'https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh@master/tools/install.sh')"
-
-case LANG in
-	zh_CN*)
-		echo '正在安装 vim'
-		;;
-	*)
-		echo ‘Installing vim...’
-		;;
-esac
-sh -c "$Install vim"
