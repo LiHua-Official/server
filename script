@@ -31,7 +31,7 @@ if [ ! $Install ];then
 	case $LANG in
 		zh_CN*)	echo '无法识别您的包管理器！';;
 		zh_TW*)	echo '無法識別您的包管理器！';;
-		*)	echo 'Unable to identify your package manager!'
+		*)	echo 'Unable to identify your package managerment!'
 	esac;exit
 fi
 case $LANG in
