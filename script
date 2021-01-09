@@ -1,6 +1,6 @@
 #!/bin/sh
 #########################################
-# Version	: 0.16			#
+# Version	: 0.17			#
 # Date		: 2021-01-09		#
 # Author	: Li Hua		#
 # Conact	: lihua@email.com	#
@@ -49,7 +49,7 @@ esac;sh -c "$Update"
 Install(){
 	for package in $*
 	do
-		if [[ ! $(find $path -name $package -maxdepth 1) ]];then
+		if [[ ! $(find $path -maxdepth 1 -name $package) ]];then
 			case $LANG in
 				zh_CN*)	echo "正在安装$package...";;
 				zh_TW*)	echo "正在安裝$package...";;
