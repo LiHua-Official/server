@@ -1,50 +1,60 @@
 #!/bin/sh
 path=`echo $PATH | sed 's/:/ /g'`
 
-for file in `find $path`
+for file in `find $path -maxdepth 1`
 do
 	case ${file##*/} in
-		apk|apt|pkg|yum)
+		apk)
+			Install="apk add"
+			Update="apk update"
+			;;
+		apt|dnf|pkg|slackpkg|yum|zypper)
 			Install="${file##*/} install"
-			Update="${file##*/} Update"
+			Update="${file##*/} update"
+			;;
+		nix-env|pkgutil)
+			Install="${file##*/} -i"
+			Update="${file##*/} -u"
 			;;
 		pacman|powerpill|yay)
 			Install="${file##*/} -S"
 			Update="${file##*/} -Syu"
+			;;
+		urpmi)
+			Install="urpmi"
+			Update="urpmi --auto-select"
 			;;
 		*)
 	esac
 done
 if [ ! $Install ];then
 	case $LANG in
-		zh_CN*)	echo '无法识别您操作系统的包管理器，源码安装方式暂未编写.';;
-		*)	echo 'Your operating system is not recognized. The source code installation has not been written.'
-	esac && exit
+		zh_CN*)	echo '无法识别您的包管理器！';;
+		zh_TW*)	echo '無法識別您的包管理器！';;
+		*)	echo 'Unable to identify your package manager!'
+	esac;exit
 fi
-
 case $LANG in
-	zh_CN*)	echo '正在更新...';;
+	zh_*)	echo '正在更新...';;
 	*)	echo 'Updating...'
-esac
-sh -c "$Update"
+esac;sh -c "$Update"
 
 Install(){
 	for package in $*
-	do
-		if [ ! $(find $path -name $package) ];then
-	       		case $LANG in
-				zh_CN*)	echo "正在安装$package...";;
-				*)	echo "Installing $package..."
-			esac
-			sh -c "$Install $package"
-		fi
-	done
+	do;if [ ! $(find $path -name $package -maxdepth 1) ];then
+		case $LANG in
+			zh_CN*)	echo "正在安装$package...";;
+			zh_TW*) echo "正在安裝$package...";;
+			*)	echo "Installing $package..."
+		esac;sh -c "$Install $package"
+	fi;done
 }
 
 Install git zsh vim jq proxytunnel
 
 case $LANG in
-	zh_CN*)	echo '正在安装 ohmyzsh...';;
+	zh_CN*)	echo '正在安装ohmyzsh...';;
+	zh_TW*) echo '正在安裝ohmyzsh....';;
 	*)	echo 'Installing ohmyzsh...'
 esac
 sh -c "$(curl -fsSL 'https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh@master/tools/install.sh')"
