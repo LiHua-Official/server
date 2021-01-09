@@ -1,4 +1,11 @@
 #!/bin/sh
+#########################################
+# Version	: 0.15			#
+# Date		: 2021-01-09		#
+# Author	: Li Hua		#
+# Conact	: lihua@email.com	#
+# Company	: MIT			#
+#########################################
 path=`echo $PATH | sed 's/:/ /g'`
 
 for file in `find $path -maxdepth 1`
@@ -27,7 +34,7 @@ do
 		*)
 	esac
 done
-if [ ! $Install ];then
+if [[ ! $Install ]];then
 	case $LANG in
 		zh_CN*)	echo '无法识别您的包管理器！';;
 		zh_TW*)	echo '無法識別您的包管理器！';;
@@ -41,13 +48,15 @@ esac;sh -c "$Update"
 
 Install(){
 	for package in $*
-	do;if [ ! $(find $path -name $package -maxdepth 1) ];then
-		case $LANG in
-			zh_CN*)	echo "正在安装$package...";;
-			zh_TW*)	echo "正在安裝$package...";;
-			*)	echo "Installing $package..."
-		esac;sh -c "$Install $package"
-	fi;done
+	do
+		if [[ ! $(find $path -name $package -maxdepth 1) ]];then
+			case $LANG in
+				zh_CN*)	echo "正在安装$package...";;
+				zh_TW*)	echo "正在安裝$package...";;
+				*)	echo "Installing $package..."
+			esac;sh -c "$Install $package"
+			fi
+		done
 }
 
 Install git zsh vim jq proxytunnel
