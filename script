@@ -44,7 +44,7 @@ Install(){
 	do;if [ ! $(find $path -name $package -maxdepth 1) ];then
 		case $LANG in
 			zh_CN*)	echo "正在安装$package...";;
-			zh_TW*) echo "正在安裝$package...";;
+			zh_TW*)	echo "正在安裝$package...";;
 			*)	echo "Installing $package..."
 		esac;sh -c "$Install $package"
 	fi;done
@@ -54,7 +54,7 @@ Install git zsh vim jq proxytunnel
 
 case $LANG in
 	zh_CN*)	echo '正在安装ohmyzsh...';;
-	zh_TW*) echo '正在安裝ohmyzsh....';;
+	zh_TW*)	echo '正在安裝ohmyzsh....';;
 	*)	echo 'Installing ohmyzsh...'
 esac
 sh -c "$(curl -fsSL 'https://cdn.jsdelivr.net/gh/ohmyzsh/ohmyzsh@master/tools/install.sh')"
